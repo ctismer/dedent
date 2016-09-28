@@ -1,0 +1,10 @@
+Version History
+===============
+
+0.3  Add the dependancy “six”
+
+0.2  The __future__ statement apparently is inherited.
+     Therefore, We cannot use print for stderr and use old syntax.
+
+0.1  Initial upload
+
