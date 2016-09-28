@@ -12,7 +12,6 @@ or
 Dedent the next program on the command line and execute it.
 
 This has the nice effect that the inline code can be freely indented.
-
 The script replaces the "-c" parameter.
 Alternatively, you can also use "-m" without ".py".
 
