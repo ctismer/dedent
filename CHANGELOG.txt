@@ -1,6 +1,10 @@
 Version History
 ===============
 
+0.5  "six" is no longer needed.
+
+0.4  Make the current program name "__main__".
+
 0.3  Add the dependancy “six”
 
 0.2  The __future__ statement apparently is inherited.

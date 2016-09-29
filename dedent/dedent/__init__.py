@@ -14,7 +14,6 @@ Inspired by a comment from Frederik Gladhorn.
 import sys
 import os
 import traceback
-import six
 import textwrap
 
 
@@ -36,12 +35,12 @@ else:
     else:
         pos = -1
 
-if (pos < 0 or pos+1 >= len(sys.argv) or
-    not isinstance(sys.argv[pos+1], six.string_types)):
+if (pos < 0 or pos+1 >= len(sys.argv)):
     raise ValueError("""you need a string like in 'python -c "..."'""")
 
 prog = sys.argv[pos+1]
 text = textwrap.dedent(prog + "\n")
+__name__ = "__main__"
 try:
     exec(text)
 except:
