@@ -1,7 +1,7 @@
 from setuptools import setup
 
 setup(name='dedent',
-      version='0.5',
+      version='0.6',
       description='Write inline code as easily as it should be',
       url='http://github.com/ctismer/dedent',
       author='Christian Tismer',

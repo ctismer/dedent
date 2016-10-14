@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 """
 Dedent the next program on the command line and execute it.
 
@@ -15,34 +17,47 @@ import sys
 import os
 import traceback
 import textwrap
+import argparse
+import __future__
+
+default_flags = (__future__.CO_FUTURE_DIVISION +
+                 __future__.CO_FUTURE_ABSOLUTE_IMPORT +
+                 __future__.CO_FUTURE_PRINT_FUNCTION +
+                 __future__.CO_FUTURE_UNICODE_LITERALS)
+
+PY3 = sys.version_info[0] >= 3
 
 
-def modname(path):
-    name = os.path.basename(path)
-    pre, post = os.path.splitext(name)
-    return pre
-
-name = modname(os.path.dirname(__file__))
-
-arg = sys.argv[0]
-if arg == "-c" or arg == "-m":
-    pos = 0
-else:
-    for idx, arg in enumerate(sys.argv):
-        if modname(arg) == name:
-            pos = idx
-            break
+def variant_parser(init):
+    description = 'Indent Your Program. We dedent it.'
+    if PY3:
+        parser = argparse.ArgumentParser(description=description, allow_abbrev=False)
     else:
-        pos = -1
+        parser = argparse.ArgumentParser(description=description) # :-(
+    parser.add_argument('--future', '-f', action='store_true', help=
+        'you can switch all __future__ statements on with the --future flag.')
+    if init:
+        parser.add_argument('__init__', nargs=1,
+                            help='this is just the name of this module.')
+    parser.add_argument('program', nargs="+", help=
+                        'Your program text to be dedented.')
 
-if (pos < 0 or pos+1 >= len(sys.argv)):
-    raise ValueError("""you need a string like in 'python -c "..."'""")
+    args = parser.parse_args()
+    return args
 
-prog = sys.argv[pos+1]
+# if someone calls "__init__" directly, we need to handle an extra argument.
+args = variant_parser(False)
+if args.program[0] == "__init__":
+    args = variant_parser(True)
+
+prog = args.program[0]
+
 text = textwrap.dedent(prog + "\n")
+flags = default_flags if args.future else 0
 __name__ = "__main__"
+
 try:
-    exec(text)
+    exec(compile(text, "<string>", "exec", flags, True))
 except:
     # we want to format the exception as if no frame was on top.
     exp, val, tb = sys.exc_info()
@@ -53,5 +68,5 @@ except:
     if len(files) == 1:
         # only one file, remove the header.
         del listing[0]
-    sys.stderr.write("".join(listing))
+    print("".join(listing), file=sys.stderr)
     sys.exit(1)

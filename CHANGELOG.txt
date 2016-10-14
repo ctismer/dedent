@@ -1,6 +1,8 @@
 Version History
 ===============
 
+0.6  The __future__ inheritance can be avoided by compile.
+
 0.5  "six" is no longer needed.
 
 0.4  Make the current program name "__main__".
